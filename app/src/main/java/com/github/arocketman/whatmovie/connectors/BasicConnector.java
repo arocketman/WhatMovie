@@ -51,7 +51,7 @@ public class BasicConnector {
      * @param page
      * @return
      */
-    public ArrayList<Movie> getMoviesByGenre(String genre , float minVote, Integer page){
+    protected ArrayList<Movie> getMoviesByGenre(String genre , float minVote, Integer page){
         try {
             return (ArrayList<Movie>) instance.discoverMovie().
                     vote_average_gte(minVote)
@@ -65,7 +65,7 @@ public class BasicConnector {
         return null;
     }
 
-    public Tmdb getInstance() {
+    protected Tmdb getInstance() {
         return instance;
     }
 
@@ -77,7 +77,7 @@ public class BasicConnector {
             genresMap.put(element.getAsJsonObject().get("name").toString().replace("\"",""),Integer.valueOf(element.getAsJsonObject().get("id").toString()));
     }
 
-    public ArrayList<PersonResultsPage.ResultsPage> getPopularPersons(Integer page){
+    protected ArrayList<PersonResultsPage.ResultsPage> getPopularPersons(Integer page){
         try {
             return (ArrayList<PersonResultsPage.ResultsPage>) instance.personService().popular(page).execute().body().results;
         } catch (IOException e) {

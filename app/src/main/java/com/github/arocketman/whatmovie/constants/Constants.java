@@ -8,6 +8,7 @@ import android.widget.FrameLayout;
 
 public class Constants {
     public final static String IMAGES_BASEURL = "http://image.tmdb.org/t/p/w500";
-    public static final Integer ANIMATE_IMAGEVIEW = 0;
-    public static final int TOGGLE_ANIMATION_DURATION = 1000;
+    public static final int TOGGLE_ANIMATION_DURATION = 500;
+
+    public static final float MIN_VOTE = 6.5f;
 }

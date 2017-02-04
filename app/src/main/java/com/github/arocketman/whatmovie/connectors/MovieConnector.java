@@ -11,5 +11,5 @@ import java.util.ArrayList;
 
 public interface MovieConnector {
     public ArrayList<Movie> getRandomMovies();
-    public ArrayList<Movie> getMovies(String genre);
+    public ArrayList<Movie> getMovies(String genre, Integer page);
 }
