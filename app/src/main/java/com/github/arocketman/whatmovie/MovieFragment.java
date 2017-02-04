@@ -6,11 +6,11 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.github.arocketman.whatmovie.connectors.BasicConnector;
 import com.github.arocketman.whatmovie.connectors.MovieDBConnector;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -18,6 +18,7 @@ import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
+import com.mindorks.placeholderview.listeners.ItemRemovedListener;
 import com.uwetrottmann.tmdb2.entities.Movie;
 
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ public class MovieFragment extends Fragment {
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
     private String mGenre;
+    private ArrayList<Movie> mMovies = new ArrayList<>();
+    private Integer mLastPage = 1;
+    private Integer mViewedPages = 0;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -85,19 +89,9 @@ public class MovieFragment extends Fragment {
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
                 .setSwipeDecor(new SwipeDecor()
-                        .setPaddingTop(20)
+                        .setPaddingTop(0)
                         .setRelativeScale(0.01f));
-
-        try {
-            ArrayList<Movie> movies = new getMoviesTask().execute().get();
-            for (Movie movie : movies)
-                mSwipeView.addView(new MovieCard(mContext, movie, mSwipeView));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        }
-
+        getMoreMovies();
 
         inflated.findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,17 +107,43 @@ public class MovieFragment extends Fragment {
             }
         });
 
+        mSwipeView.addItemRemoveListener(new ItemRemovedListener() {
+            @Override
+            public void onItemRemoved(int count) {
+                mViewedPages++;
+                int cardsLeft = mMovies.size() - mViewedPages;
+                Log.d("Cards left",String.valueOf(cardsLeft));
+                if(cardsLeft < 10)
+                    getMoreMovies();
+            }
+        });
+
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(getActivity()).addApi(AppIndex.API).build();
         return inflated;
     }
 
+    private void getMoreMovies() {
+
+        try {
+            ArrayList<Movie> fetched = new getMoviesTask().execute().get();
+            mMovies = Utils.concatenate(mMovies,fetched);
+            for (Movie movie : fetched)
+                mSwipeView.addView(new MovieCard(mContext, movie, mSwipeView));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     class getMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
 
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
-            return new MovieDBConnector(getActivity().getApplicationContext()).getMovies(mGenre, 1);
+            return new MovieDBConnector(getActivity().getApplicationContext()).getMovies(mGenre, mLastPage++);
         }
 
     }

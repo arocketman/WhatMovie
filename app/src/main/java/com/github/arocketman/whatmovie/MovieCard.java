@@ -1,14 +1,10 @@
 package com.github.arocketman.whatmovie;
 
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.v7.widget.CardView;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,9 +40,6 @@ public class MovieCard {
     @View(R.id.descriptionLayout)
     private LinearLayout descriptionView;
 
-    @View(R.id.movieCardLayout)
-    private LinearLayout movieFrameLayout;
-
     private Movie mMovie;
     private Context mContext;
     private SwipePlaceHolderView mSwipeView;
@@ -67,6 +60,9 @@ public class MovieCard {
         locationNameTxt.setText(mMovie.overview);
     }
 
+    /**
+     * Toggles and untoggles the movie card description on the description layout touch.
+     */
     @Click(R.id.descriptionLayout)
     private void toggleDescription() {
         if(profileImageView.getLayoutParams().height == 0) {
