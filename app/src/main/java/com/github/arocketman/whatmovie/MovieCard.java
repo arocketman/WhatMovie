@@ -46,11 +46,13 @@ public class MovieCard {
 
     private int descriptionOldHeight;
     private int imageViewOldHeight;
+    private int mId;
 
-    public MovieCard(Context context, Movie profile, SwipePlaceHolderView swipeView) {
+    public MovieCard(Context context, Movie profile, SwipePlaceHolderView swipeView, int id) {
         mContext = context;
         mMovie = profile;
         mSwipeView = swipeView;
+        mId = id;
     }
 
     @Resolve
@@ -110,7 +112,7 @@ public class MovieCard {
 
     @SwipeOut
     private void onSwipedOut(){
-        Log.d("EVENT", "onSwipedOut");
+        Log.d("EVENT", "onSwipedOut: " + String.valueOf(mId));
         mSwipeView.addView(this);
     }
 
@@ -121,7 +123,7 @@ public class MovieCard {
 
     @SwipeIn
     private void onSwipeIn(){
-        Log.d("EVENT", "onSwipedIn");
+        Log.d("EVENT", "onSwipedIn"  + String.valueOf(mId));
     }
 
     @SwipeInState

@@ -33,7 +33,6 @@ public class MovieFragment extends Fragment {
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
     private String mGenre;
-    private ArrayList<Movie> mMovies = new ArrayList<>();
     private Integer mLastPage = 1;
     private Integer mViewedPages = 0;
     /**
@@ -96,7 +95,7 @@ public class MovieFragment extends Fragment {
         inflated.findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSwipeView.doSwipe(false);
+                mSwipeView.doSwipe(true);
             }
         });
 
@@ -111,26 +110,27 @@ public class MovieFragment extends Fragment {
             @Override
             public void onItemRemoved(int count) {
                 mViewedPages++;
-                int cardsLeft = mMovies.size() - mViewedPages;
-                Log.d("Cards left",String.valueOf(cardsLeft));
-                if(cardsLeft < 10)
+                Log.d("Cards left",String.valueOf(count));
+                if(count < 10) {
                     getMoreMovies();
+                    mSwipeView.getBuilder().setDisplayViewCount(3);
+                }
             }
         });
 
+        mSwipeView.disableTouchSwipe();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(getActivity()).addApi(AppIndex.API).build();
         return inflated;
     }
-
+int i = 0;
     private void getMoreMovies() {
 
         try {
             ArrayList<Movie> fetched = new getMoviesTask().execute().get();
-            mMovies = Utils.concatenate(mMovies,fetched);
             for (Movie movie : fetched)
-                mSwipeView.addView(new MovieCard(mContext, movie, mSwipeView));
+                mSwipeView.addView(new MovieCard(mContext, movie, mSwipeView,i++));
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
