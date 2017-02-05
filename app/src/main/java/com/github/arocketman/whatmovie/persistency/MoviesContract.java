@@ -23,9 +23,10 @@ public final class MoviesContract {
     static final String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
                     MovieEntry._ID + " INTEGER PRIMARY KEY," +
+                    MovieEntry.COLUMN_ID + " INTEGER," +
                     MovieEntry.COLUMN_TITLE + " TEXT," +
-                    MovieEntry.COLUMN_DESCRIPTION + "TEXT," +
-                    MovieEntry.COLUMN_VOTE + "DOUBLE)" +
+                    MovieEntry.COLUMN_DESCRIPTION + " TEXT," +
+                    MovieEntry.COLUMN_VOTE + " DOUBLE," +
                     MovieEntry.COLUMN_LIKED + " BOOLEAN)";
 
     static final String SQL_DELETE_ENTRIES =

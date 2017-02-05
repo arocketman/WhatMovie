@@ -12,7 +12,7 @@ public class Constants {
     public static final float MIN_VOTE = 6.5f;
 
     //Database Constants
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 5;
     public static final String DATABASE_NAME = "WhatMovie.db";
 
 }

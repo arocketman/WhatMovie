@@ -3,6 +3,7 @@ package com.github.arocketman.whatmovie;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.renderscript.Sampler;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
+import com.uwetrottmann.tmdb2.entities.Movie;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -40,13 +44,20 @@ public class MainActivity extends AppCompatActivity  {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
-                changeGenre(mDrawerList.getItemAtPosition(position).toString());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ((DrawerLayout)parent.getParent()).closeDrawers();
+                if(position >= 2) {
+                    changeGenre(mDrawerList.getItemAtPosition(position).toString());
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ((DrawerLayout) parent.getParent()).closeDrawers();
+                        }
+                    });
+                }
+                else{
+                    for(Movie m : new MoviesDbHelper(getApplicationContext()).readFromDb(true)){
+                        System.out.println(m.title);
                     }
-                });
+                }
             }
         });
 

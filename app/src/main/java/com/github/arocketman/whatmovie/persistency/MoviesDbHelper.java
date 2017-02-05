@@ -2,11 +2,14 @@ package com.github.arocketman.whatmovie.persistency;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.github.arocketman.whatmovie.constants.Constants;
 import com.uwetrottmann.tmdb2.entities.Movie;
+
+import java.util.ArrayList;
 
 /**
  * Created by Andreuccio on 05/02/2017.
@@ -43,5 +46,27 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         values.put(MoviesContract.MovieEntry.COLUMN_VOTE,movie.vote_average);
         //Returns true if the insert method is different from -1 (insert failed)
         return this.getWritableDatabase().insert(MoviesContract.MovieEntry.TABLE_NAME,null,values) != -1;
+    }
+
+    public ArrayList<Movie> readFromDb(boolean liked){
+        Cursor cursor = getReadableDatabase().query(
+            MoviesContract.MovieEntry.TABLE_NAME,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+        );
+        ArrayList<Movie> queryResults = new ArrayList<>();
+        while(cursor.moveToNext()) {
+            Movie m = new Movie();
+            m.title = cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_TITLE));
+            m.id = cursor.getInt(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_ID));
+            m.overview = cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_DESCRIPTION));
+            m.vote_average = cursor.getDouble(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_VOTE));
+            queryResults.add(m);
+        }
+        return queryResults;
     }
 }

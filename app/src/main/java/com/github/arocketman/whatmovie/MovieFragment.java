@@ -11,7 +11,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.bumptech.glide.util.Util;
 import com.github.arocketman.whatmovie.connectors.MovieDBConnector;
+import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
@@ -35,6 +37,9 @@ public class MovieFragment extends Fragment {
     private String mGenre;
     private Integer mLastPage = 1;
     private Integer mViewedPages = 0;
+    private int lastRemovedCardIndex;
+    private ArrayList<Movie> movies = new ArrayList<>();
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -55,6 +60,10 @@ public class MovieFragment extends Fragment {
                 .setObject(object)
                 .setActionStatus(Action.STATUS_TYPE_COMPLETED)
                 .build();
+    }
+
+    private void updateLastItem(int count){
+        lastRemovedCardIndex = (movies.size() - count);
     }
 
     @Override
@@ -96,6 +105,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(false);
+                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),false);
             }
         });
 
@@ -103,19 +113,23 @@ public class MovieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(true);
+                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),true);
             }
         });
 
         mSwipeView.addItemRemoveListener(new ItemRemovedListener() {
+
             @Override
             public void onItemRemoved(int count) {
                 mViewedPages++;
                 Log.d("Cards left",String.valueOf(count));
+                updateLastItem(count);
                 if(count < 10) {
                     getMoreMovies();
                     mSwipeView.getBuilder().setDisplayViewCount(3);
                 }
             }
+
         });
 
         //mSwipeView.disableTouchSwipe();
@@ -129,6 +143,7 @@ int i = 0;
 
         try {
             ArrayList<Movie> fetched = new getMoviesTask().execute().get();
+            Utils.concatenate(movies,fetched);
             for (Movie movie : fetched)
                 mSwipeView.addView(new MovieCard(mContext, movie, mSwipeView,i++));
         } catch (InterruptedException e) {
