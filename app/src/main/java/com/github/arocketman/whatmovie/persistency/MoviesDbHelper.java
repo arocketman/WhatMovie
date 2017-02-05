@@ -37,26 +37,25 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         onUpgrade(db,oldVersion,newVersion);
     }
 
-    public boolean insertIntoDb(Movie movie , boolean liked){
+    public boolean insertIntoDb(Movie movie , int movieKind){
         ContentValues values = new ContentValues();
         values.put(MoviesContract.MovieEntry.COLUMN_ID,movie.id);
         values.put(MoviesContract.MovieEntry.COLUMN_TITLE,movie.title);
         values.put(MoviesContract.MovieEntry.COLUMN_DESCRIPTION,movie.overview);
-        values.put(MoviesContract.MovieEntry.COLUMN_LIKED,liked);
+        values.put(MoviesContract.MovieEntry.COLUMN_LIKED,movieKind);
         values.put(MoviesContract.MovieEntry.COLUMN_VOTE,movie.vote_average);
         values.put(MoviesContract.MovieEntry.POSTER_PATH,movie.poster_path);
         //Returns true if the insert method is different from -1 (insert failed)
         return this.getWritableDatabase().insert(MoviesContract.MovieEntry.TABLE_NAME,null,values) != -1;
     }
 
-    public ArrayList<Movie> readFromDb(boolean liked, boolean getAll){
+    public ArrayList<Movie> readFromDb(int viewKind, boolean getAll){
         String selection = null;
         String[] selectionArgs = null;
         if(!getAll) {
             selection = MoviesContract.MovieEntry.COLUMN_LIKED + " = ?";
-            String where_clause = (liked) ? "1" : "0";
             selectionArgs = (new String[1]);
-            selectionArgs[0]=where_clause;
+            selectionArgs[0]=String.valueOf(viewKind);
         }
         Cursor cursor = getReadableDatabase().query(
             MoviesContract.MovieEntry.TABLE_NAME,

@@ -3,6 +3,7 @@
     <string-array name="drawer_menu_items">
         <item>Liked</item>
         <item>Unliked</item>
+        <item>Watchlist</item>
         <item>Documentary</item>
         <item>Adventure</item>
         <item>Crime</item>

@@ -25,6 +25,15 @@
             android:layout_height="50dp"
             android:clickable="true"
             android:background="@drawable/unlike"/>
+
+        <ImageButton
+            android:id="@+id/watchBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:clickable="true"
+            android:background="@drawable/watchlist"
+            android:layout_marginLeft="27dp" />
+
         <ImageButton
             android:id="@+id/acceptBtn"
             android:layout_width="50dp"
@@ -32,6 +41,7 @@
             android:clickable="true"
             android:layout_marginLeft="30dp"
             android:background="@drawable/like"/>
+
     </LinearLayout>
 
 </FrameLayout>

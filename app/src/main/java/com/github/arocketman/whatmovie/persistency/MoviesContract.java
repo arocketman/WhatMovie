@@ -28,7 +28,7 @@ public final class MoviesContract {
                     MovieEntry.COLUMN_TITLE + " TEXT," +
                     MovieEntry.COLUMN_DESCRIPTION + " TEXT," +
                     MovieEntry.COLUMN_VOTE + " DOUBLE," +
-                    MovieEntry.COLUMN_LIKED + " BOOLEAN)";
+                    MovieEntry.COLUMN_LIKED + " INTEGER)";
 
     static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + MovieEntry.TABLE_NAME;

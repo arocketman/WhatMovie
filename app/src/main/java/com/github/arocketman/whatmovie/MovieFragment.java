@@ -62,7 +62,15 @@ public class MovieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(false);
-                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),false);
+                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.UNLIKED);
+            }
+        });
+
+        inflated.findViewById(R.id.watchBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSwipeView.doSwipe(true);
+                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.WATCHED);
             }
         });
 
@@ -70,7 +78,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(true);
-                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),true);
+                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.LIKED);
             }
         });
 

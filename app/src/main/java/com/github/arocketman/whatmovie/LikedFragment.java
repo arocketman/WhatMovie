@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.arocketman.whatmovie.constants.Constants;
 import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
@@ -31,8 +32,8 @@ public class LikedFragment extends Fragment {
                 .setSwipeDecor(new SwipeDecor()
                         .setPaddingTop(0)
                         .setRelativeScale(0.01f));
-        boolean liked = getArguments().getBoolean("liked");
-        for(Movie m : new MoviesDbHelper(getContext()).readFromDb(liked, false))
+        int viewKind = getArguments().getInt(Constants.VIEW_KIND_ARG);
+        for(Movie m : new MoviesDbHelper(getContext()).readFromDb(viewKind, false))
             mSwipeView.addView(new MovieCard(getContext(),m,mSwipeView));
         return inflated;
     }
