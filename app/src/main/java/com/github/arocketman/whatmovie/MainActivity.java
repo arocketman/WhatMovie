@@ -40,20 +40,18 @@ public class MainActivity extends AppCompatActivity  {
             public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
                 if(position >= 2) {
                     changeGenre(mDrawerList.getItemAtPosition(position).toString());
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            ((DrawerLayout) parent.getParent()).closeDrawers();
-                        }
-                    });
+                    closeDrawer(parent);
                 }
                 else{
                     for(Movie m : new MoviesDbHelper(getApplicationContext()).readFromDb(true, false)){
                         boolean liked = mDrawerList.getItemAtPosition(position).equals("Liked");
                         openLikedFragment(liked);
                     }
+
+                    closeDrawer(parent);
                 }
             }
+
         });
 
         for(Movie m : (new MoviesDbHelper(getApplicationContext())).readFromDb(false,true))
@@ -107,5 +105,13 @@ public class MainActivity extends AppCompatActivity  {
         return super.onOptionsItemSelected(item);
     }
 
+    private void closeDrawer(final AdapterView<?> parent) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ((DrawerLayout) parent.getParent()).closeDrawers();
+            }
+        });
+    }
 
 }
