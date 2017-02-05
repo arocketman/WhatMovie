@@ -5,8 +5,7 @@
     android:id="@+id/fragMovie"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/ignasi_pattern_s">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,11 +17,13 @@
             android:id="@+id/rejectBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:clickable="true"
             android:background="@drawable/unlike"/>
         <ImageButton
             android:id="@+id/acceptBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:clickable="true"
             android:layout_marginLeft="30dp"
             android:background="@drawable/like"/>
     </LinearLayout>

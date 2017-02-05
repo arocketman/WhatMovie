@@ -1,15 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/ignasi_pattern_s"
     tools:context="com.github.arocketman.whatmovie.MainActivity">
 
     <FrameLayout
@@ -19,7 +22,7 @@
 
     </FrameLayout>
 
-</android.support.design.widget.CoordinatorLayout>
+</LinearLayout>
 
     <ListView
         android:id="@+id/navList"
@@ -27,6 +30,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="left|start"
         android:textColor="#fff"
-        android:background="#1052bc"/>
+        android:background="#6687bc"/>
 
 </android.support.v4.widget.DrawerLayout>

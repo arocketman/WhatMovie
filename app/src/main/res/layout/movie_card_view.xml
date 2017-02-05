@@ -38,14 +38,17 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="18dp"
                 android:textStyle="bold"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:ellipsize="end" />
             <TextView
                 android:id="@+id/locationNameTxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="14dp"
-                android:textStyle="normal"/>
+                android:maxLines="2"
+                android:textStyle="normal"
+                android:ellipsize="end" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
 </LinearLayout>

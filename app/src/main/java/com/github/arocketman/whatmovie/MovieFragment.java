@@ -95,7 +95,7 @@ public class MovieFragment extends Fragment {
         inflated.findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSwipeView.doSwipe(true);
+                mSwipeView.doSwipe(false);
             }
         });
 
@@ -118,7 +118,7 @@ public class MovieFragment extends Fragment {
             }
         });
 
-        mSwipeView.disableTouchSwipe();
+        //mSwipeView.disableTouchSwipe();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(getActivity()).addApi(AppIndex.API).build();

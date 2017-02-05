@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.github.arocketman.whatmovie.constants.Constants;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Click;
@@ -71,12 +72,14 @@ public class MovieCard {
             getToggleAnimation(profileImageView,profileImageView.getHeight(),imageViewOldHeight).start();
             getToggleAnimation(descriptionView,descriptionView.getHeight(),descriptionOldHeight).start();
             ((FrameLayout.LayoutParams)descriptionView.getLayoutParams()).gravity = Gravity.BOTTOM;
+            locationNameTxt.setMaxLines(2);
         }
         else{
             imageViewOldHeight = profileImageView.getHeight();
             descriptionOldHeight = descriptionView.getHeight();
             getToggleAnimation(profileImageView,imageViewOldHeight,0).start();
             getToggleAnimation(descriptionView,descriptionOldHeight,((CardView)descriptionView.getParent()).getHeight()).start();
+            locationNameTxt.setMaxLines(Integer.MAX_VALUE);
         }
     }
 
@@ -113,7 +116,6 @@ public class MovieCard {
     @SwipeOut
     private void onSwipedOut(){
         Log.d("EVENT", "onSwipedOut: " + String.valueOf(mId));
-        mSwipeView.addView(this);
     }
 
     @SwipeCancelState
@@ -128,12 +130,12 @@ public class MovieCard {
 
     @SwipeInState
     private void onSwipeInState(){
-        Log.d("EVENT", "onSwipeInState");
+        //Log.d("EVENT", "onSwipeInState");
     }
 
     @SwipeOutState
     private void onSwipeOutState(){
-        Log.d("EVENT", "onSwipeOutState");
+        //Log.d("EVENT", "onSwipeOutState");
     }
 }
 

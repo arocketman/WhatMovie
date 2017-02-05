@@ -1,15 +1,21 @@
 package com.github.arocketman.whatmovie;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.renderscript.Sampler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.transition.TransitionManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -26,14 +32,21 @@ public class MainActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_main);
 
         mDrawerList = (ListView) findViewById(R.id.navList);
+        ((DrawerLayout)mDrawerList.getParent()).openDrawer(Gravity.LEFT);
 
         mAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.drawer_menu_items));
         mDrawerList.setAdapter(mAdapter);
-        mDrawerList.setSelection(2);
+        mDrawerList.setSelection(3);
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
                 changeGenre(mDrawerList.getItemAtPosition(position).toString());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ((DrawerLayout)parent.getParent()).closeDrawers();
+                    }
+                });
             }
         });
 
