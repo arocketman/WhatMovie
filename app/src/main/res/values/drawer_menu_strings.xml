@@ -23,4 +23,27 @@
         <item>Thriller</item>
         <item>History</item>
     </string-array>
+    <string-array name="drawer_menu_icons">
+        <item>heart</item>
+        <item>thumbs-down</item>
+        <item>book</item>
+        <item>bolt</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart Fiction</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+        <item>heart</item>
+    </string-array>
 </resources>
