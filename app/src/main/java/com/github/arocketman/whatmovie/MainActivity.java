@@ -16,6 +16,7 @@ import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
 import com.uwetrottmann.tmdb2.entities.Movie;
 
 import java.util.HashSet;
+import java.util.Random;
 
 public class MainActivity extends AppCompatActivity  {
 
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity  {
 
         mAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,getResources().getStringArray(R.array.drawer_menu_items));
         mDrawerList.setAdapter(mAdapter);
-        mDrawerList.setSelection(3);
+        mDrawerList.setSelection((new Random()).nextInt(mAdapter.getCount()));
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {

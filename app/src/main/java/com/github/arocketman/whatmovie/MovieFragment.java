@@ -23,6 +23,7 @@ import com.mindorks.placeholderview.listeners.ItemRemovedListener;
 import com.uwetrottmann.tmdb2.entities.Movie;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
 public class MovieFragment extends Fragment {
@@ -53,7 +54,9 @@ public class MovieFragment extends Fragment {
                 .setSwipeDecor(new SwipeDecor()
                         .setPaddingTop(0)
                         .setRelativeScale(0.01f));
-        getMoreMovies();
+
+        while(movies.size() < Constants.MOVIES_LEFT_FOR_REFRESH)
+            getMoreMovies();
 
         inflated.findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,12 +147,14 @@ public class MovieFragment extends Fragment {
     private void getMoreMovies() {
         try {
             ArrayList<Movie> fetched = new getMoviesTask().execute().get();
-            for (int i = 0; i < fetched.size(); i++) {
-                if(isKnown(fetched.get(i)))
-                    fetched.remove(i);
+            Iterator<Movie> movieIterator = fetched.iterator();
+            while (movieIterator.hasNext()) {
+                Movie fetchedMovie = movieIterator.next();
+                if(isKnown(fetchedMovie))
+                    movieIterator.remove();
                 else {
-                    mSwipeView.addView(new MovieCard(mContext, fetched.get(i), mSwipeView));
-                    addKnownMovie(fetched.get(i));
+                    mSwipeView.addView(new MovieCard(mContext, fetchedMovie, mSwipeView));
+                    addKnownMovie(fetchedMovie);
                 }
             }
             Utils.concatenate(movies,fetched);
