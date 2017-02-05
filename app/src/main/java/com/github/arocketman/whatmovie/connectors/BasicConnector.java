@@ -21,6 +21,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Created by Andreuccio on 01/02/2017.
@@ -52,11 +53,13 @@ public class BasicConnector {
      * @return
      */
     protected ArrayList<Movie> getMoviesByGenre(String genre , float minVote, Integer page){
+        String language = Locale.getDefault().getLanguage();
         try {
             return (ArrayList<Movie>) instance.discoverMovie().
                     vote_average_gte(minVote)
                     .with_genres(new DiscoverFilter(genresMap.get(genre)))
                     .page(page)
+                    .language(language)
                     .build().execute().
                     body().results;
         } catch (IOException e) {
