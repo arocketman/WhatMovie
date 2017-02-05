@@ -117,7 +117,7 @@ public class MovieCard {
      */
     private void pushElementBack() {
         //In case we are on the liked fragment we will reinsert the element in the swipe view
-        if(((android.view.View)mSwipeView.getParent()).getId() == R.id.fragLiked)
+        if(((android.view.View)mSwipeView.getParent().getParent()).getId() == R.id.fragLiked)
             mSwipeView.addView(this);
     }
 

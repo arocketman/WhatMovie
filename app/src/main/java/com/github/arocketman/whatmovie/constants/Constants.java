@@ -13,7 +13,7 @@ public class Constants {
     public static final int MOVIES_LEFT_FOR_REFRESH = 10;
 
     //Database Constants
-    public static final int DATABASE_VERSION = 7;
+    public static final int DATABASE_VERSION = 8;
     public static final String DATABASE_NAME = "WhatMovie.db";
 
 }

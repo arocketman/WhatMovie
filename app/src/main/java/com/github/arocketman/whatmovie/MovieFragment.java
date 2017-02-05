@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 
 import com.github.arocketman.whatmovie.connectors.MovieDBConnector;
 import com.github.arocketman.whatmovie.constants.Constants;
@@ -44,7 +45,6 @@ public class MovieFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View inflated = inflater.inflate(R.layout.fragment_movies, container, false);
         mSwipeView = (SwipePlaceHolderView) inflated.findViewById(R.id.swipeView);
         mContext = getActivity().getApplicationContext();
