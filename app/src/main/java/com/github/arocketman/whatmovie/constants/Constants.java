@@ -9,6 +9,10 @@ import android.widget.FrameLayout;
 public class Constants {
     public final static String IMAGES_BASEURL = "http://image.tmdb.org/t/p/w500";
     public static final int TOGGLE_ANIMATION_DURATION = 500;
-
     public static final float MIN_VOTE = 6.5f;
+
+    //Database Constants
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "WhatMovie.db";
+
 }

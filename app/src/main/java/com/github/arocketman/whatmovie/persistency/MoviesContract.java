@@ -1,0 +1,35 @@
+package com.github.arocketman.whatmovie.persistency;
+
+import android.provider.BaseColumns;
+
+/**
+ * Created by Andreuccio on 05/02/2017.
+ */
+
+public final class MoviesContract {
+
+    private MoviesContract(){}
+
+    static class MovieEntry implements BaseColumns{
+        static final String TABLE_NAME = "LIKED_MOVIES";
+        static final String COLUMN_ID = "ID";
+        static final String COLUMN_TITLE = "TITLE";
+        static final String COLUMN_DESCRIPTION = "DESCRIPTION";
+        static final String COLUMN_VOTE = "VOTE";
+        static final String COLUMN_LIKED = "LIKED";
+
+    }
+
+    static final String SQL_CREATE_ENTRIES =
+            "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
+                    MovieEntry._ID + " INTEGER PRIMARY KEY," +
+                    MovieEntry.COLUMN_TITLE + " TEXT," +
+                    MovieEntry.COLUMN_DESCRIPTION + "TEXT," +
+                    MovieEntry.COLUMN_VOTE + "DOUBLE)" +
+                    MovieEntry.COLUMN_LIKED + " BOOLEAN)";
+
+    static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS " + MovieEntry.TABLE_NAME;
+
+
+}
