@@ -49,10 +49,15 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         return this.getWritableDatabase().insert(MoviesContract.MovieEntry.TABLE_NAME,null,values) != -1;
     }
 
-    public ArrayList<Movie> readFromDb(boolean liked){
-        String selection = MoviesContract.MovieEntry.COLUMN_LIKED + " = ?";
-        String where_clause = (liked) ? "1" : "0";
-        String[] selectionArgs = {where_clause};
+    public ArrayList<Movie> readFromDb(boolean liked, boolean getAll){
+        String selection = null;
+        String[] selectionArgs = null;
+        if(!getAll) {
+            selection = MoviesContract.MovieEntry.COLUMN_LIKED + " = ?";
+            String where_clause = (liked) ? "1" : "0";
+            selectionArgs = (new String[1]);
+            selectionArgs[0]=where_clause;
+        }
         Cursor cursor = getReadableDatabase().query(
             MoviesContract.MovieEntry.TABLE_NAME,
                 null,

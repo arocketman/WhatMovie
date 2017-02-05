@@ -48,7 +48,6 @@ public class MovieFragment extends Fragment {
         mSwipeView = (SwipePlaceHolderView) inflated.findViewById(R.id.swipeView);
         mContext = getActivity().getApplicationContext();
         mGenre = getArguments().getString("genre");
-
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
                 .setSwipeDecor(new SwipeDecor()
@@ -145,14 +144,27 @@ public class MovieFragment extends Fragment {
     private void getMoreMovies() {
         try {
             ArrayList<Movie> fetched = new getMoviesTask().execute().get();
+            for (int i = 0; i < fetched.size(); i++) {
+                if(isKnown(fetched.get(i)))
+                    fetched.remove(i);
+                else {
+                    mSwipeView.addView(new MovieCard(mContext, fetched.get(i), mSwipeView));
+                    addKnownMovie(fetched.get(i));
+                }
+            }
             Utils.concatenate(movies,fetched);
-            for (Movie movie : fetched)
-                mSwipeView.addView(new MovieCard(mContext, movie, mSwipeView));
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
 
+    private boolean isKnown(Movie fetchedMovie) {
+        return ((MainActivity)getActivity()).mKnownMoviesIds.contains(fetchedMovie.id);
+    }
+
+    private void addKnownMovie(Movie movie){
+        ((MainActivity)getActivity()).mKnownMoviesIds.add(movie.id);
+    }
 
     class getMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
         @Override

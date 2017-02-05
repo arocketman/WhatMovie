@@ -1,14 +1,6 @@
 package com.github.arocketman.whatmovie;
 
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.renderscript.Sampler;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.transition.TransitionManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +8,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -24,10 +15,13 @@ import android.widget.ListView;
 import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
 import com.uwetrottmann.tmdb2.entities.Movie;
 
+import java.util.HashSet;
+
 public class MainActivity extends AppCompatActivity  {
 
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
+    public HashSet<Integer> mKnownMoviesIds = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +47,7 @@ public class MainActivity extends AppCompatActivity  {
                     });
                 }
                 else{
-                    for(Movie m : new MoviesDbHelper(getApplicationContext()).readFromDb(true)){
+                    for(Movie m : new MoviesDbHelper(getApplicationContext()).readFromDb(true, false)){
                         boolean liked = mDrawerList.getItemAtPosition(position).equals("Liked");
                         openLikedFragment(liked);
                     }
@@ -61,6 +55,8 @@ public class MainActivity extends AppCompatActivity  {
             }
         });
 
+        for(Movie m : (new MoviesDbHelper(getApplicationContext())).readFromDb(false,true))
+            mKnownMoviesIds.add(m.id);
         MovieFragment fragment = new MovieFragment();
         Bundle arguments = new Bundle();
         fragment.setArguments(arguments);
