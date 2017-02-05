@@ -14,6 +14,7 @@ public final class MoviesContract {
         static final String TABLE_NAME = "LIKED_MOVIES";
         static final String COLUMN_ID = "ID";
         static final String COLUMN_TITLE = "TITLE";
+        static final String POSTER_PATH = "POSTER_PATH";
         static final String COLUMN_DESCRIPTION = "DESCRIPTION";
         static final String COLUMN_VOTE = "VOTE";
         static final String COLUMN_LIKED = "LIKED";
@@ -24,6 +25,7 @@ public final class MoviesContract {
             "CREATE TABLE " + MovieEntry.TABLE_NAME + " (" +
                     MovieEntry._ID + " INTEGER PRIMARY KEY," +
                     MovieEntry.COLUMN_ID + " INTEGER," +
+                    MovieEntry.POSTER_PATH + " TEXT," +
                     MovieEntry.COLUMN_TITLE + " TEXT," +
                     MovieEntry.COLUMN_DESCRIPTION + " TEXT," +
                     MovieEntry.COLUMN_VOTE + " DOUBLE," +

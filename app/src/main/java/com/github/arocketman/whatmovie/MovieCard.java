@@ -47,13 +47,11 @@ public class MovieCard {
 
     private int descriptionOldHeight;
     private int imageViewOldHeight;
-    private int mId;
 
-    public MovieCard(Context context, Movie profile, SwipePlaceHolderView swipeView, int id) {
+    public MovieCard(Context context, Movie profile, SwipePlaceHolderView swipeView) {
         mContext = context;
         mMovie = profile;
         mSwipeView = swipeView;
-        mId = id;
     }
 
     @Resolve
@@ -113,10 +111,22 @@ public class MovieCard {
         return animator;
     }
 
+    /**
+     * Pushes the moviecard back into the swipeview if we are in the liked fragment.
+     * Won't do anything if we are on the movie fragment.
+     */
+    private void pushElementBack() {
+        //In case we are on the liked fragment we will reinsert the element in the swipe view
+        if(((android.view.View)mSwipeView.getParent()).getId() == R.id.fragLiked)
+            mSwipeView.addView(this);
+    }
+
     @SwipeOut
     private void onSwipedOut(){
-        Log.d("EVENT", "onSwipedOut: " + String.valueOf(mId));
+        Log.d("EVENT", "onSwipedOut: " );
+        pushElementBack();
     }
+
 
     @SwipeCancelState
     private void onSwipeCancelState(){
@@ -125,7 +135,8 @@ public class MovieCard {
 
     @SwipeIn
     private void onSwipeIn(){
-        Log.d("EVENT", "onSwipedIn"  + String.valueOf(mId));
+        Log.d("EVENT", "onSwipedIn" );
+        pushElementBack();
     }
 
     @SwipeInState

@@ -29,7 +29,6 @@ public class MainActivity extends AppCompatActivity  {
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +54,8 @@ public class MainActivity extends AppCompatActivity  {
                 }
                 else{
                     for(Movie m : new MoviesDbHelper(getApplicationContext()).readFromDb(true)){
-                        System.out.println(m.title);
+                        boolean liked = mDrawerList.getItemAtPosition(position).equals("Liked");
+                        openLikedFragment(liked);
                     }
                 }
             }
@@ -68,6 +68,15 @@ public class MainActivity extends AppCompatActivity  {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.flContent, fragment).commit();
 
+    }
+
+    private void openLikedFragment(boolean liked) {
+        LikedFragment fragment = new LikedFragment();
+        Bundle arguments = new Bundle();
+        fragment.setArguments(arguments);
+        arguments.putBoolean("liked",liked);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
     }
 
     private void changeGenre(String genre){

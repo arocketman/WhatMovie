@@ -6,13 +6,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.util.Util;
 import com.github.arocketman.whatmovie.connectors.MovieDBConnector;
+import com.github.arocketman.whatmovie.constants.Constants;
 import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -26,17 +25,12 @@ import com.uwetrottmann.tmdb2.entities.Movie;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
-/**
- * Created by Andreuccio on 03/02/2017.
- */
-
 public class MovieFragment extends Fragment {
 
     private SwipePlaceHolderView mSwipeView;
     private Context mContext;
     private String mGenre;
     private Integer mLastPage = 1;
-    private Integer mViewedPages = 0;
     private int lastRemovedCardIndex;
     private ArrayList<Movie> movies = new ArrayList<>();
 
@@ -45,45 +39,6 @@ public class MovieFragment extends Fragment {
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("Movie Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    private void updateLastItem(int count){
-        lastRemovedCardIndex = (movies.size() - count);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 
     @Nullable
     @Override
@@ -118,44 +73,88 @@ public class MovieFragment extends Fragment {
         });
 
         mSwipeView.addItemRemoveListener(new ItemRemovedListener() {
-
             @Override
             public void onItemRemoved(int count) {
-                mViewedPages++;
-                Log.d("Cards left",String.valueOf(count));
-                updateLastItem(count);
-                if(count < 10) {
-                    getMoreMovies();
-                    mSwipeView.getBuilder().setDisplayViewCount(3);
-                }
+                updateItemsCount(count);
             }
-
         });
 
-        //mSwipeView.disableTouchSwipe();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(getActivity()).addApi(AppIndex.API).build();
         return inflated;
     }
-int i = 0;
-    private void getMoreMovies() {
 
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    public Action getIndexApiAction() {
+        Thing object = new Thing.Builder()
+                .setName("Movie Page") // TODO: Define a title for the content shown.
+                // TODO: Make sure this auto-generated URL is correct.
+                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
+                .build();
+        return new Action.Builder(Action.TYPE_VIEW)
+                .setObject(object)
+                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
+                .build();
+    }
+
+    /**
+     * Updates the last item popped from the movies ArrayList.
+     * @param count number of items left to swipe.
+     */
+    private void updateLastItem(int count){
+        lastRemovedCardIndex = (movies.size() - count);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        AppIndex.AppIndexApi.start(client, getIndexApiAction());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        AppIndex.AppIndexApi.end(client, getIndexApiAction());
+        client.disconnect();
+    }
+
+    /**
+     * Updates the last item and calls for more movies if the item count is less than the threshold.
+     * @param count
+     */
+    private void updateItemsCount(int count) {
+        updateLastItem(count);
+        if(count < Constants.MOVIES_LEFT_FOR_REFRESH) {
+            getMoreMovies();
+            mSwipeView.getBuilder().setDisplayViewCount(3);
+        }
+    }
+
+    /**
+     * Calls the AsyncTask getMovieTask to fetch more movies.
+     */
+    private void getMoreMovies() {
         try {
             ArrayList<Movie> fetched = new getMoviesTask().execute().get();
             Utils.concatenate(movies,fetched);
             for (Movie movie : fetched)
-                mSwipeView.addView(new MovieCard(mContext, movie, mSwipeView,i++));
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
+                mSwipeView.addView(new MovieCard(mContext, movie, mSwipeView));
+        } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }
 
 
     class getMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
-
         @Override
         protected ArrayList<Movie> doInBackground(String... params) {
             return new MovieDBConnector(getActivity().getApplicationContext()).getMovies(mGenre, mLastPage++);

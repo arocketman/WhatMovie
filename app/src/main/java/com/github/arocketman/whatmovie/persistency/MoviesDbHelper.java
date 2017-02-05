@@ -44,16 +44,20 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         values.put(MoviesContract.MovieEntry.COLUMN_DESCRIPTION,movie.overview);
         values.put(MoviesContract.MovieEntry.COLUMN_LIKED,liked);
         values.put(MoviesContract.MovieEntry.COLUMN_VOTE,movie.vote_average);
+        values.put(MoviesContract.MovieEntry.POSTER_PATH,movie.poster_path);
         //Returns true if the insert method is different from -1 (insert failed)
         return this.getWritableDatabase().insert(MoviesContract.MovieEntry.TABLE_NAME,null,values) != -1;
     }
 
     public ArrayList<Movie> readFromDb(boolean liked){
+        String selection = MoviesContract.MovieEntry.COLUMN_LIKED + " = ?";
+        String where_clause = (liked) ? "1" : "0";
+        String[] selectionArgs = {where_clause};
         Cursor cursor = getReadableDatabase().query(
             MoviesContract.MovieEntry.TABLE_NAME,
                 null,
-                null,
-                null,
+                selection,
+                selectionArgs,
                 null,
                 null,
                 null
@@ -65,6 +69,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
             m.id = cursor.getInt(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_ID));
             m.overview = cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_DESCRIPTION));
             m.vote_average = cursor.getDouble(cursor.getColumnIndex(MoviesContract.MovieEntry.COLUMN_VOTE));
+            m.poster_path = cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.POSTER_PATH));
             queryResults.add(m);
         }
         return queryResults;
