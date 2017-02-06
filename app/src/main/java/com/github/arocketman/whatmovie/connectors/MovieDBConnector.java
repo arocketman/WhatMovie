@@ -6,7 +6,9 @@ import com.github.arocketman.whatmovie.constants.Constants;
 import com.uwetrottmann.tmdb2.entities.Movie;
 import java.util.ArrayList;
 
-
+/**
+ * This is the connector that is used for themoviedb.org
+ */
 public class MovieDBConnector extends BasicConnector implements MovieConnector {
 
     public MovieDBConnector(Context context) {

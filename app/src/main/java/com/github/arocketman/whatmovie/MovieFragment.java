@@ -9,7 +9,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 
 import com.github.arocketman.whatmovie.connectors.MovieDBConnector;
 import com.github.arocketman.whatmovie.constants.Constants;
@@ -62,7 +61,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(false);
-                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.UNLIKED);
+                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.UNLIKED_ARG_ID);
             }
         });
 
@@ -70,7 +69,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(true);
-                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.WATCHED);
+                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.WATCHED_ARG_ID);
             }
         });
 
@@ -78,7 +77,7 @@ public class MovieFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 mSwipeView.doSwipe(true);
-                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.LIKED);
+                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.LIKED_ARG_ID);
             }
         });
 
@@ -161,14 +160,20 @@ public class MovieFragment extends Fragment {
                 if(isKnown(fetchedMovie))
                     movieIterator.remove();
                 else {
-                    mSwipeView.addView(new MovieCard(mContext, fetchedMovie, mSwipeView));
-                    addKnownMovie(fetchedMovie);
+                    if (isValidMovie(fetchedMovie)) {
+                        mSwipeView.addView(new MovieCard(mContext, fetchedMovie, mSwipeView));
+                        addKnownMovie(fetchedMovie);
+                    }
                 }
             }
             Utils.concatenate(movies,fetched);
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isValidMovie(Movie fetchedMovie) {
+        return !fetchedMovie.overview.isEmpty() && !fetchedMovie.title.isEmpty() && !fetchedMovie.poster_path.isEmpty();
     }
 
     private boolean isKnown(Movie fetchedMovie) {

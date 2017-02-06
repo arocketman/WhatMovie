@@ -43,7 +43,6 @@ public class MainActivity extends AppCompatActivity  {
         final Drawer drawer = new DrawerBuilder().withActivity(this).build();
         final String [] itemsArray = getResources().getStringArray(R.array.drawer_menu_items);
         populateDrawer(drawer,itemsArray);
-
         drawer.setSelectionAtPosition((new Random()).nextInt(drawer.getDrawerItems().size()));
 
         drawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity  {
                     changeGenre(itemsArray[drawer.getCurrentSelectedPosition()-1]);
                 else
                         openLikedFragment(drawer.getCurrentSelectedPosition());
+                drawer.closeDrawer();
                 return true;
             }
         });

@@ -3,9 +3,8 @@ package com.github.arocketman.whatmovie.persistency;
 import android.provider.BaseColumns;
 
 /**
- * Created by Andreuccio on 05/02/2017.
+ * Defines a contract for the LIKED_MOVIES table.
  */
-
 public final class MoviesContract {
 
     private MoviesContract(){}
@@ -17,7 +16,7 @@ public final class MoviesContract {
         static final String POSTER_PATH = "POSTER_PATH";
         static final String COLUMN_DESCRIPTION = "DESCRIPTION";
         static final String COLUMN_VOTE = "VOTE";
-        static final String COLUMN_LIKED = "LIKED";
+        static final String COLUMN_LIKED = "LIKED_ARG_ID";
 
     }
 

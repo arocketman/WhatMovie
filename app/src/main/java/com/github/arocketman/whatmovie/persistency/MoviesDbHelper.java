@@ -12,9 +12,8 @@ import com.uwetrottmann.tmdb2.entities.Movie;
 import java.util.ArrayList;
 
 /**
- * Created by Andreuccio on 05/02/2017.
+ * Main class to access the movies database and interact with it.
  */
-
 public class MoviesDbHelper extends SQLiteOpenHelper {
 
     public MoviesDbHelper(Context context){
@@ -37,6 +36,12 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         onUpgrade(db,oldVersion,newVersion);
     }
 
+    /**
+     * Inserts the movie into the database.
+     * @param movie the movie to insert
+     * @param movieKind Liked(0),Unliked(1),Watchlist(2)
+     * @return true if the insertion is successful.
+     */
     public boolean insertIntoDb(Movie movie , int movieKind){
         ContentValues values = new ContentValues();
         values.put(MoviesContract.MovieEntry.COLUMN_ID,movie.id);
@@ -49,6 +54,12 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         return this.getWritableDatabase().insert(MoviesContract.MovieEntry.TABLE_NAME,null,values) != -1;
     }
 
+    /**
+     * Reads movies from the database table specified in the MoviesContract class
+     * @param viewKind Liked,Unliked or watchlist. See Constants for more info.
+     * @param getAll If true the viewKind parameter is discarded and gets all the entries.
+     * @return An arraylist being the result of the given query.
+     */
     public ArrayList<Movie> readFromDb(int viewKind, boolean getAll){
         String selection = null;
         String[] selectionArgs = null;

@@ -6,7 +6,7 @@ import com.uwetrottmann.tmdb2.entities.Movie;
 import java.util.ArrayList;
 
 /**
- * Created by Andreuccio on 01/02/2017.
+ * Basic interface used from non-abstract connectors.
  */
 
 public interface MovieConnector {
