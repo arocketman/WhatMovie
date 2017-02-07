@@ -87,6 +87,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
             m.poster_path = cursor.getString(cursor.getColumnIndex(MoviesContract.MovieEntry.POSTER_PATH));
             queryResults.add(m);
         }
+        cursor.close();
         return queryResults;
     }
 }
