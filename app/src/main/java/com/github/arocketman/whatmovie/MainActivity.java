@@ -2,6 +2,7 @@ package com.github.arocketman.whatmovie;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -30,8 +31,6 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity  {
 
-    private ListView mDrawerList;
-    private ArrayAdapter<String> mAdapter;
     public HashSet<Integer> mKnownMoviesIds = new HashSet<>();
 
     @Override
@@ -138,6 +137,22 @@ public class MainActivity extends AppCompatActivity  {
             }
             drawer.addItem(drawerItem);
         }
+    }
+
+    /**
+     * Creates a snackbar message for no connection
+     */
+    void connectionProblemMsg(){
+        Snackbar snackbar = Snackbar
+                .make(getWindow().getDecorView().getRootView(),  getResources().getString(R.string.no_connection_message), Snackbar.LENGTH_INDEFINITE);
+
+        snackbar.show();
+        snackbar.setAction("DISMISS", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
 }

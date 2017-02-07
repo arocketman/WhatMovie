@@ -54,8 +54,7 @@ public class MovieFragment extends Fragment {
                         .setPaddingTop(0)
                         .setRelativeScale(0.01f));
 
-        while(movies.size() < Constants.MOVIES_LEFT_FOR_REFRESH)
-            getMoreMovies();
+        getMoviesThreshold();
 
         inflated.findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,6 +91,15 @@ public class MovieFragment extends Fragment {
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(getActivity()).addApi(AppIndex.API).build();
         return inflated;
+    }
+
+    private void getMoviesThreshold() {
+        boolean connectionOk = true;
+        while(movies.size() < Constants.MOVIES_LEFT_FOR_REFRESH && connectionOk) {
+            connectionOk=getMoreMovies();
+            if(!connectionOk)
+                ((MainActivity)getActivity()).connectionProblemMsg();
+        }
     }
 
     /**
@@ -143,17 +151,22 @@ public class MovieFragment extends Fragment {
     private void updateItemsCount(int count) {
         updateLastItem(count);
         if(count < Constants.MOVIES_LEFT_FOR_REFRESH) {
-            getMoreMovies();
+            boolean connectionOk = getMoreMovies();
+            if(!connectionOk)
+                ((MainActivity)getActivity()).connectionProblemMsg();
             mSwipeView.getBuilder().setDisplayViewCount(3);
         }
     }
 
     /**
      * Calls the AsyncTask getMovieTask to fetch more movies.
+     * @return false if the fetched object is null (connection failing). False otherwise.
      */
-    private void getMoreMovies() {
+    private boolean getMoreMovies() {
         try {
             ArrayList<Movie> fetched = new getMoviesTask().execute().get();
+            if(fetched==null)
+                return false;
             Iterator<Movie> movieIterator = fetched.iterator();
             while (movieIterator.hasNext()) {
                 Movie fetchedMovie = movieIterator.next();
@@ -170,6 +183,7 @@ public class MovieFragment extends Fragment {
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+        return true;
     }
 
     private boolean isValidMovie(Movie fetchedMovie) {

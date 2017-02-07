@@ -2,6 +2,5 @@
     <string name="app_name">WhatMovie</string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_connection_message">"There was a problem with the internet connection :("</string>
 </resources>
