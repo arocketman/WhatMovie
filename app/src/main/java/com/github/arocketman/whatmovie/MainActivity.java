@@ -68,6 +68,10 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
+    /**
+     * Starts the likedfragment with a viewKind passed by the user's touch.
+     * @param viewKind 0 for liked , 1 for un liked , 2 for watchlist.
+     */
     private void openLikedFragment(int viewKind) {
         LikedFragment fragment = new LikedFragment();
         Bundle arguments = new Bundle();
@@ -77,6 +81,10 @@ public class MainActivity extends AppCompatActivity  {
         fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
     }
 
+    /**
+     * Starts a MovieFragment based on the genre the user touched.
+     * @param genre the genre the user wants to discover.
+     */
     private void changeGenre(String genre){
         MovieFragment fragment = new MovieFragment();
         Bundle arguments = new Bundle();
@@ -106,15 +114,6 @@ public class MainActivity extends AppCompatActivity  {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private void closeDrawer(final AdapterView<?> parent) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ((DrawerLayout) parent.getParent()).closeDrawers();
-            }
-        });
     }
 
     /**
@@ -147,11 +146,10 @@ public class MainActivity extends AppCompatActivity  {
                 .make(getWindow().getDecorView().getRootView(),  getResources().getString(R.string.no_connection_message), Snackbar.LENGTH_INDEFINITE);
 
         snackbar.show();
+        //The setaction dismiss requires an empty onClick method.
         snackbar.setAction("DISMISS", new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-
-            }
+            public void onClick(View v) {}
         });
     }
 
