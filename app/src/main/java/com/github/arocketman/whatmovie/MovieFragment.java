@@ -17,7 +17,6 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.listeners.ItemRemovedListener;
 import com.uwetrottmann.tmdb2.entities.Movie;
@@ -48,12 +47,7 @@ public class MovieFragment extends Fragment {
         mSwipeView = (SwipePlaceHolderView) inflated.findViewById(R.id.swipeView);
         mContext = getActivity().getApplicationContext();
         mGenre = getArguments().getString("genre");
-        mSwipeView.getBuilder()
-                .setDisplayViewCount(3)
-                .setWidthSwipeDistFactor(2f)
-                .setSwipeDecor(new SwipeDecor()
-                        .setPaddingTop(0)
-                        .setRelativeScale(0.01f));
+        Utils.buildSwipeView(mSwipeView);
 
         getMoviesThreshold();
 
