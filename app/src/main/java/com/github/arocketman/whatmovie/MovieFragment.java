@@ -50,6 +50,7 @@ public class MovieFragment extends Fragment {
         mGenre = getArguments().getString("genre");
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
+                .setWidthSwipeDistFactor(2f)
                 .setSwipeDecor(new SwipeDecor()
                         .setPaddingTop(0)
                         .setRelativeScale(0.01f));

@@ -12,9 +12,9 @@
 
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         app:srcCompat="@drawable/title"
-        android:id="@+id/imageView" />
+        android:id="@+id/imageView"
+        android:layout_height="70dp" />
 
     <FrameLayout
         android:id="@+id/flContent"

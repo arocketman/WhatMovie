@@ -81,6 +81,11 @@ public class MovieCard {
         }
     }
 
+    @Click(R.id.profileImageView)
+    private void callToggleDescr(){
+        toggleDescription();
+    }
+
     /**
      * Creates an animator that smoothly animates the passed view height from startHeight to
      * endHeight.
