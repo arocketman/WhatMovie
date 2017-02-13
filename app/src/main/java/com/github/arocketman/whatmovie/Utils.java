@@ -31,7 +31,8 @@ public class Utils {
     static void buildSwipeView(SwipePlaceHolderView mSwipeView) {
         mSwipeView.getBuilder()
                 .setDisplayViewCount(3)
-                .setWidthSwipeDistFactor(2f)
+                .setWidthSwipeDistFactor(4f)
+                .setHeightSwipeDistFactor(4f)
                 .setSwipeDecor(new SwipeDecor()
                         .setPaddingTop(0)
                         .setRelativeScale(0.01f));

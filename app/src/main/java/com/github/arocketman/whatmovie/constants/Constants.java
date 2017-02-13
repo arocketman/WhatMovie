@@ -25,4 +25,5 @@ public class Constants {
 
     //Other constants
     public static final int TOGGLE_ANIMATION_DURATION = 500;
+    public static final String GENRE_ARGUMENT = "genre";
 }

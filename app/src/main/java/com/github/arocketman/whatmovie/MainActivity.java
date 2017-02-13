@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Drawer drawer = new DrawerBuilder().withActivity(this).build();
+        drawer.openDrawer();
         final String [] itemsArray = getResources().getStringArray(R.array.drawer_menu_items);
         populateDrawer(drawer,itemsArray);
         drawer.setSelectionAtPosition((new Random()).nextInt(drawer.getDrawerItems().size()));
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity  {
         MovieFragment fragment = new MovieFragment();
         Bundle arguments = new Bundle();
         fragment.setArguments(arguments);
-        arguments.putString("genre",itemsArray[drawer.getCurrentSelectedPosition()-1]);
+        arguments.putString(Constants.GENRE_ARGUMENT,itemsArray[drawer.getCurrentSelectedPosition()-1]);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().add(R.id.flContent, fragment).commit();
 
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity  {
         MovieFragment fragment = new MovieFragment();
         Bundle arguments = new Bundle();
         fragment.setArguments(arguments);
-        arguments.putString("genre",genre);
+        arguments.putString(Constants.GENRE_ARGUMENT,genre);
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
     }

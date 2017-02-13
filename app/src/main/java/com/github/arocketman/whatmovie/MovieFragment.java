@@ -1,11 +1,13 @@
 package com.github.arocketman.whatmovie;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,10 +48,10 @@ public class MovieFragment extends Fragment {
         View inflated = inflater.inflate(R.layout.fragment_movies, container, false);
         mSwipeView = (SwipePlaceHolderView) inflated.findViewById(R.id.swipeView);
         mContext = getActivity().getApplicationContext();
-        mGenre = getArguments().getString("genre");
+        mGenre = getArguments().getString(Constants.GENRE_ARGUMENT);
         Utils.buildSwipeView(mSwipeView);
 
-        getMoviesThreshold();
+        new callMovies().execute(true);
 
         inflated.findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +148,12 @@ public class MovieFragment extends Fragment {
     private void updateItemsCount(int count) {
         updateLastItem(count);
         if(count < Constants.MOVIES_LEFT_FOR_REFRESH) {
-            boolean connectionOk = getMoreMovies();
+            boolean connectionOk = false;
+            try {
+                connectionOk = new callMovies().execute(false).get();
+            } catch (InterruptedException | ExecutionException e) {
+                e.printStackTrace();
+            }
             if(!connectionOk)
                 ((MainActivity)getActivity()).connectionProblemMsg();
             mSwipeView.getBuilder().setDisplayViewCount(3);
@@ -158,26 +165,27 @@ public class MovieFragment extends Fragment {
      * @return false if the fetched object is null (connection failing). False otherwise.
      */
     private boolean getMoreMovies() {
-        try {
-            ArrayList<Movie> fetched = new getMoviesTask().execute().get();
-            if(fetched==null)
-                return false;
-            Iterator<Movie> movieIterator = fetched.iterator();
-            while (movieIterator.hasNext()) {
-                Movie fetchedMovie = movieIterator.next();
-                if(isKnown(fetchedMovie))
-                    movieIterator.remove();
-                else {
-                    if (isValidMovie(fetchedMovie)) {
-                        mSwipeView.addView(new MovieCard(mContext, fetchedMovie, mSwipeView));
-                        addKnownMovie(fetchedMovie);
-                    }
+        ArrayList<Movie> fetched = new MovieDBConnector(getActivity().getApplicationContext()).getMovies(mGenre, mLastPage++);
+        if(fetched==null)
+            return false;
+        Iterator<Movie> movieIterator = fetched.iterator();
+        while (movieIterator.hasNext()) {
+            final Movie fetchedMovie = movieIterator.next();
+            if(isKnown(fetchedMovie))
+                movieIterator.remove();
+            else {
+                if (isValidMovie(fetchedMovie)) {
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mSwipeView.addView(new MovieCard(mContext, fetchedMovie, mSwipeView));
+                        }
+                    });
+                    addKnownMovie(fetchedMovie);
                 }
             }
-            Utils.concatenate(movies,fetched);
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
         }
+        Utils.concatenate(movies,fetched);
         return true;
     }
 
@@ -193,11 +201,35 @@ public class MovieFragment extends Fragment {
         ((MainActivity)getActivity()).mKnownMoviesIds.add(movie.id);
     }
 
-    class getMoviesTask extends AsyncTask<String, Void, ArrayList<Movie>> {
+    class callMovies extends AsyncTask<Boolean,Void,Boolean> {
+        ProgressDialog progDailog;
+
         @Override
-        protected ArrayList<Movie> doInBackground(String... params) {
-            return new MovieDBConnector(getActivity().getApplicationContext()).getMovies(mGenre, mLastPage++);
+        protected Boolean doInBackground(Boolean... params) {
+            Boolean isFirstRun = params[0];
+            if(isFirstRun)
+                getMoviesThreshold();
+            else
+                return getMoreMovies();
+            return false;
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progDailog = new ProgressDialog(getActivity());
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            mSwipeView.refreshDrawableState();
+            progDailog.dismiss();
+        }
     }
 }
