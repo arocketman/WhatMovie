@@ -51,7 +51,10 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         values.put(MoviesContract.MovieEntry.COLUMN_VOTE,movie.vote_average);
         values.put(MoviesContract.MovieEntry.POSTER_PATH,movie.poster_path);
         //Returns true if the insert method is different from -1 (insert failed)
-        return this.getWritableDatabase().insert(MoviesContract.MovieEntry.TABLE_NAME,null,values) != -1;
+        System.out.println("ID: " + movie.id);
+        boolean isOk = this.getWritableDatabase().insert(MoviesContract.MovieEntry.TABLE_NAME,null,values) != -1;
+        this.getWritableDatabase().close();
+        return isOk;
     }
 
     /**

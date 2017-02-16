@@ -7,7 +7,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,7 +50,7 @@ public class MovieFragment extends Fragment {
         mGenre = getArguments().getString(Constants.GENRE_ARGUMENT);
         Utils.buildSwipeView(mSwipeView);
 
-        new callMovies().execute(true);
+        new callMovies(true).execute();
 
         inflated.findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,7 +149,7 @@ public class MovieFragment extends Fragment {
         if(count < Constants.MOVIES_LEFT_FOR_REFRESH) {
             boolean connectionOk = false;
             try {
-                connectionOk = new callMovies().execute(false).get();
+                connectionOk = new callMovies(false).execute().get();
             } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
@@ -201,35 +200,44 @@ public class MovieFragment extends Fragment {
         ((MainActivity)getActivity()).mKnownMoviesIds.add(movie.id);
     }
 
-    class callMovies extends AsyncTask<Boolean,Void,Boolean> {
+    class callMovies extends AsyncTask<Void,Void,Boolean> {
         ProgressDialog progDailog;
+        Boolean isFirstRun;
+
+        callMovies(Boolean isFirstRun) {
+            super();
+            this.isFirstRun = isFirstRun;
+        }
 
         @Override
-        protected Boolean doInBackground(Boolean... params) {
-            Boolean isFirstRun = params[0];
+        protected Boolean doInBackground(Void... params) {
             if(isFirstRun)
                 getMoviesThreshold();
             else
                 return getMoreMovies();
-            return false;
+            return true;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progDailog = new ProgressDialog(getActivity());
-            progDailog.setMessage("Loading...");
-            progDailog.setIndeterminate(false);
-            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progDailog.setCancelable(true);
-            progDailog.show();
+            //Creating a "loading" spinner if it's the first run.
+            if(isFirstRun) {
+                progDailog = new ProgressDialog(getActivity());
+                progDailog.setMessage("Loading...");
+                progDailog.setIndeterminate(false);
+                progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+                progDailog.setCancelable(true);
+                progDailog.show();
+            }
         }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             mSwipeView.refreshDrawableState();
-            progDailog.dismiss();
+            if(isFirstRun)
+                progDailog.dismiss();
         }
     }
 }

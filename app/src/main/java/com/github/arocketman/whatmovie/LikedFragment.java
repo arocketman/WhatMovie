@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import com.github.arocketman.whatmovie.constants.Constants;
 import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
@@ -29,6 +30,17 @@ public class LikedFragment extends Fragment {
         int viewKind = getArguments().getInt(Constants.VIEW_KIND_ARG);
         for(Movie m : new MoviesDbHelper(getContext()).readFromDb(viewKind, false))
             mSwipeView.addView(new MovieCard(getContext(),m, mSwipeView));
+        ImageButton button = null;
+        if(viewKind == Constants.LIKED_ARG_ID) {
+            button = ((ImageButton) inflated.findViewById(R.id.LikedAcceptBtn));
+            ((ViewGroup)button.getParent()).removeView(button);
+        }
+        else if(viewKind == Constants.UNLIKED_ARG_ID) {
+            button = ((ImageButton) inflated.findViewById(R.id.LikedRejectBtn));
+            ((ViewGroup)button.getParent()).removeView(button);
+        }
+
+
         return inflated;
     }
 
