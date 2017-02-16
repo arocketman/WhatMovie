@@ -116,6 +116,12 @@ public class MovieCard {
         return animator;
     }
 
+
+    @SwipeIn
+    private void onSwipeIn(){
+        pushElementBack();
+    }
+
     /**
      * Pushes the moviecard back into the swipeview if we are in the liked fragment.
      * Won't do anything if we are on the movie fragment.
@@ -126,32 +132,6 @@ public class MovieCard {
             mSwipeView.addView(this);
     }
 
-    @SwipeOut
-    private void onSwipedOut(){
-        Log.d("EVENT", "onSwipedOut: " );
-        pushElementBack();
-    }
 
-
-    @SwipeCancelState
-    private void onSwipeCancelState(){
-        Log.d("EVENT", "onSwipeCancelState");
-    }
-
-    @SwipeIn
-    private void onSwipeIn(){
-        Log.d("EVENT", "onSwipedIn" );
-        pushElementBack();
-    }
-
-    @SwipeInState
-    private void onSwipeInState(){
-        //Log.d("EVENT", "onSwipeInState");
-    }
-
-    @SwipeOutState
-    private void onSwipeOutState(){
-        //Log.d("EVENT", "onSwipeOutState");
-    }
 }
 

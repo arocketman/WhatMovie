@@ -24,13 +24,13 @@ public class LikedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View inflated = inflater.inflate(R.layout.fragment_liked, container, false);
-        SwipePlaceHolderView mSwipeView = (SwipePlaceHolderView) inflated.findViewById(R.id.swipeView);
+        final SwipePlaceHolderView mSwipeView = (SwipePlaceHolderView) inflated.findViewById(R.id.swipeView);
         Utils.buildSwipeView(mSwipeView);
         //We will populate the swipeview based on what the user clicked.
         int viewKind = getArguments().getInt(Constants.VIEW_KIND_ARG);
         for(Movie m : new MoviesDbHelper(getContext()).readFromDb(viewKind, false))
             mSwipeView.addView(new MovieCard(getContext(),m, mSwipeView));
-        ImageButton button = null;
+        ImageButton button;
         if(viewKind == Constants.LIKED_ARG_ID) {
             button = ((ImageButton) inflated.findViewById(R.id.LikedAcceptBtn));
             ((ViewGroup)button.getParent()).removeView(button);
