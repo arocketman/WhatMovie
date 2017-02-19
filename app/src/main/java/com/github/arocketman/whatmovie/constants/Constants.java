@@ -17,6 +17,7 @@ public class Constants {
     public static final int UNLIKED_ARG_ID = 1;
     public static final int LIKED_ARG_ID = 0;
     public static final int WATCHED_ARG_ID = 2;
+    public static final int REMOVE_ARG_ID = -1;
 
     //Database Constants
     public static final int DATABASE_VERSION = 10;

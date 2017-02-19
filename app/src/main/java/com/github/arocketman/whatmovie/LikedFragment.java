@@ -24,13 +24,14 @@ public class LikedFragment extends Fragment {
 
     ArrayList<Movie> movies = new ArrayList<>();
     int lastRemovedCardIndex;
+    SwipePlaceHolderView mSwipeView;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View inflated = inflater.inflate(R.layout.fragment_liked, container, false);
-        final SwipePlaceHolderView mSwipeView = (SwipePlaceHolderView) inflated.findViewById(R.id.swipeView);
+        mSwipeView = (SwipePlaceHolderView) inflated.findViewById(R.id.swipeView);
         Utils.buildSwipeView(mSwipeView);
         //We will populate the swipeview based on what the user clicked.
         int viewKind = getArguments().getInt(Constants.VIEW_KIND_ARG);
@@ -38,38 +39,10 @@ public class LikedFragment extends Fragment {
         for(Movie m : movies)
             mSwipeView.addView(new MovieCard(getContext(),m, mSwipeView));
 
-        inflated.findViewById(R.id.LikedAcceptBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(false);
-                if(!movies.isEmpty()) {
-                new MoviesDbHelper(getContext()).changeLikedStatus(movies.get(lastRemovedCardIndex).id,Constants.LIKED_ARG_ID);
-                    movies.remove(movies.get(lastRemovedCardIndex));
-                }
-            }
-        });
-
-        inflated.findViewById(R.id.LikeddelBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(true);
-                if(!movies.isEmpty()) {
-                    new MoviesDbHelper(getContext()).deleteMovie(movies.get(lastRemovedCardIndex).id);
-                    movies.remove(movies.get(lastRemovedCardIndex));
-                }
-            }
-        });
-
-        inflated.findViewById(R.id.LikedRejectBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(true);
-                if(!movies.isEmpty()) {
-                new MoviesDbHelper(getContext()).changeLikedStatus(movies.get(lastRemovedCardIndex).id,Constants.UNLIKED_ARG_ID);
-                    movies.remove(movies.get(lastRemovedCardIndex));
-                }
-            }
-        });
+        //Adding button listeners.
+        inflated.findViewById(R.id.LikedAcceptBtn).setOnClickListener(new ButtonListener(Constants.LIKED_ARG_ID,false));
+        inflated.findViewById(R.id.LikeddelBtn).setOnClickListener(new ButtonListener(Constants.REMOVE_ARG_ID,true));
+        inflated.findViewById(R.id.LikedRejectBtn).setOnClickListener(new ButtonListener(Constants.UNLIKED_ARG_ID,true));
 
         ImageButton button;
         if(viewKind == Constants.LIKED_ARG_ID) {
@@ -89,6 +62,31 @@ public class LikedFragment extends Fragment {
         });
 
         return inflated;
+    }
+
+    class ButtonListener implements View.OnClickListener {
+
+        int operation;
+        boolean isSwipeIn;
+
+        public ButtonListener(int operation, boolean isSwipeIn) {
+            this.operation = operation;
+            this.isSwipeIn = isSwipeIn;
+        }
+
+        @Override
+        public void onClick(View v) {
+            mSwipeView.doSwipe(isSwipeIn);
+            if(!movies.isEmpty()) {
+                //Changing the status if we are liking/unliking a movie
+                if(operation == Constants.LIKED_ARG_ID || operation == Constants.UNLIKED_ARG_ID)
+                    new MoviesDbHelper(getContext()).changeLikedStatus(movies.get(lastRemovedCardIndex).id,operation);
+                //Otherwise the operation must be of deletion and we proceed to call deleteMovie.
+                else
+                    new MoviesDbHelper(getContext()).deleteMovie(movies.get(lastRemovedCardIndex).id);
+                movies.remove(movies.get(lastRemovedCardIndex));
+            }
+        }
     }
 
 }
