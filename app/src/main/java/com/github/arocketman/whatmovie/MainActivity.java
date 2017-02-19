@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.facebook.stetho.Stetho;
 import com.github.arocketman.whatmovie.constants.Constants;
 import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -36,6 +37,7 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        Stetho.initializeWithDefaults(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Drawer drawer = new DrawerBuilder().withActivity(this).build();

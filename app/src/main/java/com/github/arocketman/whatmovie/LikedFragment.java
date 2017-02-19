@@ -12,12 +12,18 @@ import com.github.arocketman.whatmovie.constants.Constants;
 import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
 import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
+import com.mindorks.placeholderview.listeners.ItemRemovedListener;
 import com.uwetrottmann.tmdb2.entities.Movie;
+
+import java.util.ArrayList;
 
 /**
  * The LikedFragment class is responsible for inflating the "Liked,unliked,watchlist" categories.
  */
 public class LikedFragment extends Fragment {
+
+    ArrayList<Movie> movies = new ArrayList<>();
+    int lastRemovedCardIndex;
 
     @Nullable
     @Override
@@ -28,8 +34,43 @@ public class LikedFragment extends Fragment {
         Utils.buildSwipeView(mSwipeView);
         //We will populate the swipeview based on what the user clicked.
         int viewKind = getArguments().getInt(Constants.VIEW_KIND_ARG);
-        for(Movie m : new MoviesDbHelper(getContext()).readFromDb(viewKind, false))
+        movies = new MoviesDbHelper(getContext()).readFromDb(viewKind, false);
+        for(Movie m : movies)
             mSwipeView.addView(new MovieCard(getContext(),m, mSwipeView));
+
+        inflated.findViewById(R.id.LikedAcceptBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSwipeView.doSwipe(false);
+                if(!movies.isEmpty()) {
+                new MoviesDbHelper(getContext()).changeLikedStatus(movies.get(lastRemovedCardIndex).id,Constants.LIKED_ARG_ID);
+                    movies.remove(movies.get(lastRemovedCardIndex));
+                }
+            }
+        });
+
+        inflated.findViewById(R.id.LikeddelBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSwipeView.doSwipe(true);
+                if(!movies.isEmpty()) {
+                    new MoviesDbHelper(getContext()).deleteMovie(movies.get(lastRemovedCardIndex).id);
+                    movies.remove(movies.get(lastRemovedCardIndex));
+                }
+            }
+        });
+
+        inflated.findViewById(R.id.LikedRejectBtn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mSwipeView.doSwipe(true);
+                if(!movies.isEmpty()) {
+                new MoviesDbHelper(getContext()).changeLikedStatus(movies.get(lastRemovedCardIndex).id,Constants.UNLIKED_ARG_ID);
+                    movies.remove(movies.get(lastRemovedCardIndex));
+                }
+            }
+        });
+
         ImageButton button;
         if(viewKind == Constants.LIKED_ARG_ID) {
             button = ((ImageButton) inflated.findViewById(R.id.LikedAcceptBtn));
@@ -40,6 +81,12 @@ public class LikedFragment extends Fragment {
             ((ViewGroup)button.getParent()).removeView(button);
         }
 
+        mSwipeView.addItemRemoveListener(new ItemRemovedListener() {
+            @Override
+            public void onItemRemoved(int count) {
+                lastRemovedCardIndex = Utils.updateLastItem(movies.size(),count);
+            }
+        });
 
         return inflated;
     }

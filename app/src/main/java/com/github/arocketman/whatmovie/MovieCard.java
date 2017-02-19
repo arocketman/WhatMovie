@@ -27,7 +27,7 @@ import com.uwetrottmann.tmdb2.entities.Movie;
 
 
 @Layout(R.layout.movie_card_view)
-public class MovieCard {
+class MovieCard {
 
     @View(R.id.profileImageView)
     private ImageView profileImageView;
@@ -48,7 +48,7 @@ public class MovieCard {
     private int descriptionOldHeight;
     private int imageViewOldHeight;
 
-    public MovieCard(Context context, Movie profile, SwipePlaceHolderView swipeView) {
+    MovieCard(Context context, Movie profile, SwipePlaceHolderView swipeView) {
         mContext = context;
         mMovie = profile;
         mSwipeView = swipeView;
@@ -119,7 +119,7 @@ public class MovieCard {
 
     @SwipeIn
     private void onSwipeIn(){
-        pushElementBack();
+        //pushElementBack();
     }
 
     /**

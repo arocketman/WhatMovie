@@ -37,4 +37,12 @@ public class Utils {
                         .setPaddingTop(0)
                         .setRelativeScale(0.01f));
     }
+
+    /**
+     * Updates the last item popped from the movies ArrayList.
+     * @param count number of items left to swipe.
+     */
+    public static int updateLastItem(int arraySize , int count){
+        return arraySize - count;
+    }
 }

@@ -114,14 +114,6 @@ public class MovieFragment extends Fragment {
                 .build();
     }
 
-    /**
-     * Updates the last item popped from the movies ArrayList.
-     * @param count number of items left to swipe.
-     */
-    private void updateLastItem(int count){
-        lastRemovedCardIndex = (movies.size() - count);
-    }
-
     @Override
     public void onStart() {
         super.onStart();
@@ -145,7 +137,7 @@ public class MovieFragment extends Fragment {
      * @param count
      */
     private void updateItemsCount(int count) {
-        updateLastItem(count);
+        lastRemovedCardIndex = Utils.updateLastItem(movies.size(),count);
         if(count < Constants.MOVIES_LEFT_FOR_REFRESH) {
             boolean connectionOk = false;
             try {

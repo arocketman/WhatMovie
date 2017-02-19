@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.github.arocketman.whatmovie.constants.Constants;
 import com.uwetrottmann.tmdb2.entities.Movie;
@@ -92,5 +93,27 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return queryResults;
+    }
+
+    /**
+     * Changes the status of the movie to the selected one (liked, unliked, watchlist).
+     * @param movieID the id of the movie to change the status.
+     * @param LikedStatus the status to which to change (defined in Constants).
+     */
+    public void changeLikedStatus(Integer movieID, Integer LikedStatus){
+        ContentValues values = new ContentValues();
+        values.put(MoviesContract.MovieEntry.COLUMN_LIKED,LikedStatus);
+        int numberaffected = this.getWritableDatabase().update(MoviesContract.MovieEntry.TABLE_NAME,values,MoviesContract.MovieEntry.COLUMN_ID+"="+movieID,null);
+        Log.d("ROWS AFFECTED: " , String.valueOf(numberaffected));
+        this.getWritableDatabase().close();
+    }
+
+    /**
+     * Deletes movie from database.
+     * @param movieID Id of the movie to remove.
+     */
+    public void deleteMovie(Integer movieID){
+        this.getWritableDatabase().delete(MoviesContract.MovieEntry.TABLE_NAME,MoviesContract.MovieEntry.COLUMN_ID + "=" + movieID,null);
+        this.getWritableDatabase().close();
     }
 }
