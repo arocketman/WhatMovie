@@ -103,8 +103,7 @@ public class MoviesDbHelper extends SQLiteOpenHelper {
     public void changeLikedStatus(Integer movieID, Integer LikedStatus){
         ContentValues values = new ContentValues();
         values.put(MoviesContract.MovieEntry.COLUMN_LIKED,LikedStatus);
-        int numberaffected = this.getWritableDatabase().update(MoviesContract.MovieEntry.TABLE_NAME,values,MoviesContract.MovieEntry.COLUMN_ID+"="+movieID,null);
-        Log.d("ROWS AFFECTED: " , String.valueOf(numberaffected));
+        this.getWritableDatabase().update(MoviesContract.MovieEntry.TABLE_NAME,values,MoviesContract.MovieEntry.COLUMN_ID+"="+movieID,null);
         this.getWritableDatabase().close();
     }
 

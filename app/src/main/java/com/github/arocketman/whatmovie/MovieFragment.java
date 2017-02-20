@@ -44,31 +44,11 @@ public class MovieFragment extends Fragment {
         new CallMovies(true).execute();
 
         //Reject button behaviour
-        inflated.findViewById(R.id.rejectBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(false);
-                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.UNLIKED_ARG_ID);
-            }
-        });
-
+        inflated.findViewById(R.id.rejectBtn).setOnClickListener(new ButtonListener(Constants.UNLIKED_ARG_ID,false));
         //Watch button behaviour
-        inflated.findViewById(R.id.watchBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(true);
-                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.WATCHED_ARG_ID);
-            }
-        });
-
+        inflated.findViewById(R.id.watchBtn).setOnClickListener(new ButtonListener(Constants.WATCHED_ARG_ID,false));
         //Accept (liked) button behaviour
-        inflated.findViewById(R.id.acceptBtn).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSwipeView.doSwipe(true);
-                new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),Constants.LIKED_ARG_ID);
-            }
-        });
+        inflated.findViewById(R.id.acceptBtn).setOnClickListener(new ButtonListener(Constants.LIKED_ARG_ID,false));
 
         //Setting up an item remove listener when we swipe in or remove an element via button.
         mSwipeView.addItemRemoveListener(new ItemRemovedListener() {
@@ -212,6 +192,29 @@ public class MovieFragment extends Fragment {
             mSwipeView.refreshDrawableState();
             if(isFirstRun)
                 progDailog.dismiss();
+        }
+    }
+
+    class ButtonListener implements View.OnClickListener{
+
+        boolean doSwipe;
+        int buttonType;
+
+        /**
+         * Constructs the Listener
+         * @param buttonType Watched/Liked/Unliked
+         * @see {@link com.github.arocketman.whatmovie.constants.Constants}
+         * @param doSwipe boolean to pass to the SwipeView doSwipe method.
+         */
+        public ButtonListener(int buttonType,boolean doSwipe) {
+            this.buttonType = buttonType;
+            this.doSwipe = doSwipe;
+        }
+
+        @Override
+        public void onClick(View v) {
+            mSwipeView.doSwipe(doSwipe);
+            new MoviesDbHelper(getContext()).insertIntoDb(movies.get(lastRemovedCardIndex),buttonType);
         }
     }
 }
