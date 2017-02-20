@@ -9,15 +9,10 @@ import java.util.ArrayList;
 /**
  * This is the connector that is used for themoviedb.org
  */
-public class MovieDBConnector extends BasicConnector implements MovieConnector {
+public class MovieDBConnector extends BasicMovieDBConnector implements MovieConnector {
 
     public MovieDBConnector(Context context) {
         super(context);
-    }
-
-    @Override
-    public ArrayList<Movie> getRandomMovies() {
-        return null;
     }
 
     @Override

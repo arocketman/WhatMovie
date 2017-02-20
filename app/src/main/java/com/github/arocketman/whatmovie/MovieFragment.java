@@ -21,6 +21,11 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * This class is responsible for the movie discovery categories. It takes a genre as argument
+ * and requests through the connectors for movies with that given genre.
+ * @see {@link MovieDBConnector}
+ */
 public class MovieFragment extends Fragment {
 
     private SwipePlaceHolderView mSwipeView;

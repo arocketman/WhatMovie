@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 /**
  * Basic interface used from non-abstract connectors.
+ * The interface is supposed to allow for future diversity in movie services.
+ * As of the first release only themoviedb is supported.
  */
-
-public interface MovieConnector {
-    public ArrayList<Movie> getRandomMovies();
-    public ArrayList<Movie> getMovies(String genre, Integer page);
+interface MovieConnector {
+    ArrayList<Movie> getMovies(String genre, Integer page);
 }

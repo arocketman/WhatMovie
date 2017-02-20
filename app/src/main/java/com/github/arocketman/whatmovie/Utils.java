@@ -6,10 +6,9 @@ import com.mindorks.placeholderview.SwipePlaceHolderView;
 import java.util.ArrayList;
 
 /**
- * Created by Andreuccio on 04/02/2017.
+ * Contains utility methods used throughout the project.
  */
-
-public class Utils {
+class Utils {
 
     /**
      * Merges together array l1 and l2.
@@ -42,7 +41,7 @@ public class Utils {
      * Updates the last item popped from the movies ArrayList.
      * @param count number of items left to swipe.
      */
-    public static int updateLastItem(int arraySize , int count){
+    static int updateLastItem(int arraySize, int count){
         return arraySize - count;
     }
 }

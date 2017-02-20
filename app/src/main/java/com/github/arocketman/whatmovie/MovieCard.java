@@ -25,7 +25,11 @@ import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
 import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 import com.uwetrottmann.tmdb2.entities.Movie;
 
-
+/**
+ * The MovieCard class is a one-by-one correspondence with the movie_card_view layout.
+ * This is used to quickly access the layout parameters and inflate them correctly.
+ * This is part of the PlaceHolderView library specification.
+ */
 @Layout(R.layout.movie_card_view)
 class MovieCard {
 
@@ -43,7 +47,6 @@ class MovieCard {
 
     private Movie mMovie;
     private Context mContext;
-    private SwipePlaceHolderView mSwipeView;
 
     private int descriptionOldHeight;
     private int imageViewOldHeight;
@@ -51,7 +54,6 @@ class MovieCard {
     MovieCard(Context context, Movie profile, SwipePlaceHolderView swipeView) {
         mContext = context;
         mMovie = profile;
-        mSwipeView = swipeView;
     }
 
     @Resolve
@@ -115,23 +117,5 @@ class MovieCard {
         animator.setDuration(Constants.TOGGLE_ANIMATION_DURATION);
         return animator;
     }
-
-
-    @SwipeIn
-    private void onSwipeIn(){
-        //pushElementBack();
-    }
-
-    /**
-     * Pushes the moviecard back into the swipeview if we are in the liked fragment.
-     * Won't do anything if we are on the movie fragment.
-     */
-    private void pushElementBack() {
-        //In case we are on the liked fragment we will reinsert the element in the swipe view
-        if(((android.view.View)mSwipeView.getParent().getParent()).getId() == R.id.fragLiked)
-            mSwipeView.addView(this);
-    }
-
-
 }
 

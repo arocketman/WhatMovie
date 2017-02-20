@@ -5,7 +5,6 @@ import android.widget.FrameLayout;
 /**
  * This class holds most of the constants used throughout the project.
  */
-
 public class Constants {
     //themoviedb constants
     public final static String IMAGES_BASEURL = "http://image.tmdb.org/t/p/w500";

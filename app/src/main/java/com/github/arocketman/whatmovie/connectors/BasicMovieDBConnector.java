@@ -28,12 +28,12 @@ import java.util.Locale;
  * interface.
  */
 
-abstract class BasicConnector {
+abstract class BasicMovieDBConnector {
 
     private Tmdb instance;
     private HashMap<String, Integer> genresMap;
 
-    BasicConnector(Context context){
+    BasicMovieDBConnector(Context context){
         instance = new Tmdb(Secret.API_KEY);
         try {
             genresMap = new HashMap<>();

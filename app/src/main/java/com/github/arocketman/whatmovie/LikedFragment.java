@@ -18,7 +18,8 @@ import com.uwetrottmann.tmdb2.entities.Movie;
 import java.util.ArrayList;
 
 /**
- * The LikedFragment class is responsible for inflating the "Liked,unliked,watchlist" categories.
+ * The LikedFragment class is responsible for inflating andmanaging the "Liked,unliked,watchlist"
+ * categories.
  */
 public class LikedFragment extends Fragment {
 
