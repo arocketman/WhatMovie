@@ -4,16 +4,9 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.facebook.stetho.Stetho;
 import com.github.arocketman.whatmovie.constants.Constants;
@@ -26,13 +19,13 @@ import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.uwetrottmann.tmdb2.entities.Movie;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity  {
 
     public HashSet<Integer> mKnownMoviesIds = new HashSet<>();
+    private Drawer drawer;
+    private String [] itemsArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,28 +35,17 @@ public class MainActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Getting a new drawer and an array with all the genres and categories.
-        final Drawer drawer = new DrawerBuilder().withActivity(this).build();
-        final String [] itemsArray = getResources().getStringArray(R.array.drawer_menu_items);
+        drawer = new DrawerBuilder().withActivity(this).build();
+        itemsArray = getResources().getStringArray(R.array.drawer_menu_items);
 
         //Opening and populating the drawer.
         drawer.openDrawer();
         populateDrawer(drawer,itemsArray);
-        //Opening the watchlist
+        //Selecting the watchlist
         drawer.setSelectionAtPosition(Constants.WATCHED_ARG_ID);
 
         //Handling click for a drawer element.
-        drawer.setOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
-            @Override
-            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                if(position >= 3)
-                    //The minus one here is because of the separator element in the draweritems.
-                    changeGenre(itemsArray[drawer.getCurrentSelectedPosition()-1]);
-                else
-                    openLikedFragment(drawer.getCurrentSelectedPosition(),false);
-                drawer.closeDrawer();
-                return true;
-            }
-        });
+        drawer.setOnDrawerItemClickListener(new DrawerClickListener());
 
         //Filling up the known movies arraylist fetching it from the database.
         for(Movie m : (new MoviesDbHelper(getApplicationContext())).readFromDb(0,true))
@@ -139,4 +121,19 @@ public class MainActivity extends AppCompatActivity  {
         });
     }
 
+    /**
+     * Handles the click event on a drawer element.
+     */
+    class DrawerClickListener implements Drawer.OnDrawerItemClickListener{
+            @Override
+            public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                if(position >= 3)
+                    //The minus one here is because of the separator element in the draweritems.
+                    changeGenre(itemsArray[drawer.getCurrentSelectedPosition()-1]);
+                else
+                    openLikedFragment(drawer.getCurrentSelectedPosition(),false);
+                drawer.closeDrawer();
+                return true;
+            }
+    }
 }
