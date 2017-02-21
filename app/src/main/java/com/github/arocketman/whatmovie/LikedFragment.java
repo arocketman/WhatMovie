@@ -10,7 +10,6 @@ import android.widget.ImageButton;
 
 import com.github.arocketman.whatmovie.constants.Constants;
 import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
-import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.listeners.ItemRemovedListener;
 import com.uwetrottmann.tmdb2.entities.Movie;
@@ -38,7 +37,7 @@ public class LikedFragment extends Fragment {
         int viewKind = getArguments().getInt(Constants.VIEW_KIND_ARG);
         movies = new MoviesDbHelper(getContext()).readFromDb(viewKind, false);
         for(Movie m : movies)
-            mSwipeView.addView(new MovieCard(getContext(),m, mSwipeView));
+            mSwipeView.addView(new MovieCard(getContext(),m));
 
         //Adding button listeners.
         inflated.findViewById(R.id.LikedAcceptBtn).setOnClickListener(new ButtonListener(Constants.LIKED_ARG_ID,false));
@@ -70,7 +69,7 @@ public class LikedFragment extends Fragment {
         int operation;
         boolean isSwipeIn;
 
-        public ButtonListener(int operation, boolean isSwipeIn) {
+        ButtonListener(int operation, boolean isSwipeIn) {
             this.operation = operation;
             this.isSwipeIn = isSwipeIn;
         }

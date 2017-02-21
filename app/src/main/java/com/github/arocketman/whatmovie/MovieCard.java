@@ -3,7 +3,6 @@ package com.github.arocketman.whatmovie;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -11,18 +10,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.disklrucache.DiskLruCache;
 import com.github.arocketman.whatmovie.constants.Constants;
-import com.mindorks.placeholderview.SwipePlaceHolderView;
 import com.mindorks.placeholderview.annotations.Click;
 import com.mindorks.placeholderview.annotations.Layout;
 import com.mindorks.placeholderview.annotations.Resolve;
 import com.mindorks.placeholderview.annotations.View;
-import com.mindorks.placeholderview.annotations.swipe.SwipeCancelState;
-import com.mindorks.placeholderview.annotations.swipe.SwipeIn;
-import com.mindorks.placeholderview.annotations.swipe.SwipeInState;
-import com.mindorks.placeholderview.annotations.swipe.SwipeOut;
-import com.mindorks.placeholderview.annotations.swipe.SwipeOutState;
 import com.uwetrottmann.tmdb2.entities.Movie;
 
 /**
@@ -51,7 +43,7 @@ class MovieCard {
     private int descriptionOldHeight;
     private int imageViewOldHeight;
 
-    MovieCard(Context context, Movie profile, SwipePlaceHolderView swipeView) {
+    MovieCard(Context context, Movie profile) {
         mContext = context;
         mMovie = profile;
     }
@@ -94,7 +86,7 @@ class MovieCard {
      * @param view The view that needs to be animated.
      * @param startHeight Starting height of the view.
      * @param endHeight Final height of the view.
-     * @return
+     * @return the created animator
      */
     private ValueAnimator getToggleAnimation(final android.view.View view , int startHeight , int endHeight) {
         //We create the animator and setup the starting height and the final height. The animator

@@ -117,7 +117,7 @@ public class MovieFragment extends Fragment {
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            mSwipeView.addView(new MovieCard(mContext, fetchedMovie, mSwipeView));
+                            mSwipeView.addView(new MovieCard(mContext, fetchedMovie));
                         }
                     });
                     addKnownMovie(fetchedMovie);
@@ -211,7 +211,7 @@ public class MovieFragment extends Fragment {
          * @see {@link com.github.arocketman.whatmovie.constants.Constants}
          * @param doSwipe boolean to pass to the SwipeView doSwipe method.
          */
-        public ButtonListener(int buttonType,boolean doSwipe) {
+        ButtonListener(int buttonType, boolean doSwipe) {
             this.buttonType = buttonType;
             this.doSwipe = doSwipe;
         }
