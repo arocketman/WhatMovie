@@ -27,7 +27,6 @@ import java.util.Locale;
  * It's just used as a basic connector from its children and does not implement the MovieConnector
  * interface.
  */
-
 abstract class BasicMovieDBConnector {
 
     private Tmdb instance;
@@ -65,10 +64,6 @@ abstract class BasicMovieDBConnector {
             e.printStackTrace();
         }
         return null;
-    }
-
-    protected Tmdb getInstance() {
-        return instance;
     }
 
     /**
