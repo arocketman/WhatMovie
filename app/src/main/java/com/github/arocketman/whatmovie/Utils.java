@@ -4,6 +4,7 @@ import com.mindorks.placeholderview.SwipeDecor;
 import com.mindorks.placeholderview.SwipePlaceHolderView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Contains utility methods used throughout the project.
@@ -43,5 +44,13 @@ class Utils {
      */
     static int updateLastItem(int arraySize, int count){
         return arraySize - count;
+    }
+
+    /**
+     * Returns a random value between min and max, max inclusive.
+     * @return random value between min and max.
+     */
+    public static Integer getRandomInRange(int min , int max){
+         return (new Random()).nextInt((max - min) + 1) + min;
     }
 }

@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.Window;
 
-import com.facebook.stetho.Stetho;
 import com.github.arocketman.whatmovie.constants.Constants;
 import com.github.arocketman.whatmovie.persistency.MoviesDbHelper;
 import com.mikepenz.fontawesome_typeface_library.FontAwesome;
@@ -30,8 +29,8 @@ public class MainActivity extends AppCompatActivity  {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        //TODO: remove this when releasing first version
-        Stetho.initializeWithDefaults(this);
+        //Uncomment to enable facebook Stetho.
+        //Stetho.initializeWithDefaults(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Getting a new drawer and an array with all the genres and categories.
@@ -42,7 +41,8 @@ public class MainActivity extends AppCompatActivity  {
         drawer.openDrawer();
         populateDrawer(drawer,itemsArray);
         //Selecting the watchlist
-        drawer.setSelectionAtPosition(Constants.WATCHED_ARG_ID);
+        int selectedGenre = Utils.getRandomInRange(3,20);
+        drawer.setSelectionAtPosition(selectedGenre);
 
         //Handling click for a drawer element.
         drawer.setOnDrawerItemClickListener(new DrawerClickListener());
@@ -51,37 +51,38 @@ public class MainActivity extends AppCompatActivity  {
         for(Movie m : (new MoviesDbHelper(getApplicationContext())).readFromDb(0,true))
             mKnownMoviesIds.add(m.id);
 
-        openLikedFragment(Constants.WATCHED_ARG_ID,true);
+        changeGenre(String.valueOf(selectedGenre),true);
     }
 
     /**
      * Starts the likedfragment with a viewKind passed by the user's touch.
      * @param viewKind 0 for liked , 1 for un liked , 2 for watchlist.
-     * @param isFirstExec true if we are opening the fragment for the first time, false otherwise.
      */
-    private void openLikedFragment(int viewKind, boolean isFirstExec) {
+    private void openLikedFragment(int viewKind) {
         LikedFragment fragment = new LikedFragment();
         Bundle arguments = new Bundle();
         fragment.setArguments(arguments);
         arguments.putInt(Constants.VIEW_KIND_ARG,viewKind);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        if(isFirstExec)
-            fragmentManager.beginTransaction().add(R.id.flContent, fragment).commit();
-        else
-            fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
+        fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
     }
 
     /**
      * Starts a MovieFragment based on the genre the user touched.
      * @param genre the genre the user wants to discover.
+     * @param isFirstExec true if we are opening the fragment for the first time, false otherwise.
      */
-    private void changeGenre(String genre){
+    private void changeGenre(String genre, boolean isFirstExec){
+
         MovieFragment fragment = new MovieFragment();
         Bundle arguments = new Bundle();
         fragment.setArguments(arguments);
         arguments.putString(Constants.GENRE_ARGUMENT,genre);
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
+        if(isFirstExec)
+            fragmentManager.beginTransaction().add(R.id.flContent,fragment).commit();
+        else
+            fragmentManager.beginTransaction().replace(R.id.flContent,fragment).commit();
     }
 
     /**
@@ -129,11 +130,12 @@ public class MainActivity extends AppCompatActivity  {
             public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                 if(position >= 3)
                     //The minus one here is because of the separator element in the draweritems.
-                    changeGenre(itemsArray[drawer.getCurrentSelectedPosition()-1]);
+                    changeGenre(itemsArray[drawer.getCurrentSelectedPosition()-1],false);
                 else
-                    openLikedFragment(drawer.getCurrentSelectedPosition(),false);
+                    openLikedFragment(drawer.getCurrentSelectedPosition());
                 drawer.closeDrawer();
                 return true;
             }
     }
+
 }

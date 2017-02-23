@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import com.github.arocketman.whatmovie.constants.Constants;
 import com.uwetrottmann.tmdb2.entities.Movie;
