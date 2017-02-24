@@ -1,12 +1,16 @@
 # WhatMovie
 
-WhatMovie is an android app that lets you discover new movies and add it to your watchlist. You can also like or dislike movies so that they won't be shown again in the suggestions.
+WhatMovie is an app that helps you find new movies based on your favourite genres. A movie rich database that is going to allow you to find new movies of any genre such as thriller / comedy / action etc.
+
+You can organize your movies into three main categories:
+
+* Liked - Movies you watched and liked.
+* Unliked - Movies you dislike.
+* Watchlist - Movies you want to watch in the future.
+
+Any movie that gets inserted in one of these category won't be suggested again.
 
 themoviedb.org was used as reference movie database and sqlite to create the local movie database.
-
-![WhatMovie1](http://i.imgur.com/0kPT3xC.png)
-
-![WhatMovie1](http://i.imgur.com/R7dVXsr.png)
 
 ###  Libraries used
 
@@ -16,3 +20,15 @@ themoviedb.org was used as reference movie database and sqlite to create the loc
 
 * [Material drawer](https://github.com/mikepenz/MaterialDrawer) : To create a material google-play like drawer
 * [Android iconics](https://github.com/mikepenz/Android-Iconics): Using svg iconics font easily.
+
+### Screenshots
+
+![WhatMovie1](/images/imga.png)
+
+![WhatMovie2](/images/imgb.png)
+
+![WhatMovie3](/images/imgc.png)
+
+![WhatMovie4](/images/imgd.png)
+
+This product uses the TMDb API but is not endorsed or certified by TMDb.
