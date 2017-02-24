@@ -17,18 +17,17 @@ themoviedb.org was used as reference movie database and sqlite to create the loc
 * [tmdb-java](https://github.com/UweTrottmann/tmdb-java) : To interact with themoviedb API
 * [placeholderview](https://github.com/janishar/PlaceHolderView) : To make the swipe effects between cards
 * [Glide](https://github.com/bumptech/glide) : To load up images from URLs.
-
 * [Material drawer](https://github.com/mikepenz/MaterialDrawer) : To create a material google-play like drawer
 * [Android iconics](https://github.com/mikepenz/Android-Iconics): Using svg iconics font easily.
 
 ### Screenshots
 
-![WhatMovie1](/images/imga.png)
+<img src="/images/imga.png" alt="WhatMovie1" width="324" height="576" style="max-width:100%;">
 
-![WhatMovie2](/images/imgb.png)
+<img src="/images/imgb.png" alt="WhatMovie2" width="324" height="576" style="max-width:100%;">
 
-![WhatMovie3](/images/imgc.png)
+<img src="/images/imgc.png" alt="WhatMovie3" width="324" height="576" style="max-width:100%;">
 
-![WhatMovie4](/images/imgd.png)
+<img src="/images/imgd.png" alt="WhatMovie4" width="324" height="576" style="max-width:100%;">
 
 This product uses the TMDb API but is not endorsed or certified by TMDb.
